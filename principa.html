@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Celulares</title>
+    <link rel="stylesheet" href="estilo1.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Listado de Celulares</h1>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Buscar celulares..." onkeyup="searchFunction()">
+        </div>
+
+        <div class="filters">
+            <select id="brandFilter" onchange="filterFunction()">
+                <option value="">Todas las Marcas</option>
+                <option value="Apple">Apple</option>
+                <option value="Samsung">Samsung</option>
+                <option value="Xiaomi">Xiaomi</option>
+                <option value="Google">Google</option>
+
+            </select>
+            <select id="typeFilter" onchange="filterFunction()">
+                <option value="">Todos los Tipos</option>
+                <option value="Smartphone">Celulares</option>
+                <option value="Tablet">Tablets</option>
+                <option value="Accsesorios">Accsesorios</option>
+
+            </select>
+            <input type="number" id="minPriceFilter" placeholder="Precio Mínimo" onkeyup="filterFunction()">
+            <input type="number" id="maxPriceFilter" placeholder="Precio Máximo" onkeyup="filterFunction()">
+       
+        </div>
+
+        <div class="cellphone-list" id="cellphoneList">
+        </div>
+
+        <div class="cellphone-detail" id="cellphoneDetail">
+        </div>
+    </div>
+
+    <script src="princi.js"></script>
+</body>
+</html>
