@@ -25,24 +25,27 @@
                 <option value="Samsung">Samsung</option>
                 <option value="Xiaomi">Xiaomi</option>
                 <option value="Google">Google</option>
-
             </select>
             <select id="typeFilter" onchange="filterFunction()">
                 <option value="">Todos los Tipos</option>
                 <option value="Smartphone">Celulares</option>
                 <option value="Tablet">Tablets</option>
                 <option value="Accsesorios">Accsesorios</option>
-
             </select>
-            <input type="number" id="minPriceFilter" placeholder="Precio Mínimo" onkeyup="filterFunction()">
-            <input type="number" id="maxPriceFilter" placeholder="Precio Máximo" onkeyup="filterFunction()">
-       
+            <input type="number" id="minPriceFilter" placeholder="Precio Mínimo" oninput="filterFunction()">
+            <input type="number" id="maxPriceFilter" placeholder="Precio Máximo" oninput="filterFunction()">
         </div>
 
         <div class="cellphone-list" id="cellphoneList">
         </div>
 
-        <div class="cellphone-detail" id="cellphoneDetail">
+        <div class="cellphone-detail" id="cellphoneDetail" style="display: none;">
+            <div id="commentsSection">
+                <h3>Comentarios</h3>
+                <div id="commentsList"></div>
+                <textarea id="commentInput" placeholder="Escribe tu comentario..."></textarea>
+                <button onclick="addComment()">Agregar Comentario</button>
+            </div>
         </div>
     </div>
 

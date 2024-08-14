@@ -39,7 +39,7 @@ function loadCellphones() {
     cellphones.forEach((cellphone, index) => {
         const item = document.createElement('div');
         item.className = 'cellphone-item';
-        item.onclick = () => showDetail(index);
+        item.dataset.index = index; // Almacena el índice en un atributo data
         item.innerHTML = `
             <img src="${cellphone.image}" alt="${cellphone.model}">
             <h3>${cellphone.model}</h3>
@@ -48,6 +48,7 @@ function loadCellphones() {
             <p>Fecha de Lanzamiento: ${cellphone.releaseDate}</p>
             <p>Precio: $${cellphone.price}</p>
         `;
+        item.onclick = () => showDetail(index);
         list.appendChild(item);
     });
 }
@@ -65,10 +66,39 @@ function showDetail(index) {
         <p><strong>Reseña:</strong> ${cellphone.review}</p>
         <p><strong>Sinopsis:</strong> ${cellphone.synopsis}</p>
         <p><strong>Otra Información:</strong> ${cellphone.otherInfo}</p>
+        <div id="commentsSection">
+            <h3>Comentarios</h3>
+            <div id="commentsList"></div>
+            <textarea id="commentInput" placeholder="Escribe tu comentario..."></textarea>
+            <button onclick="addComment(${index})">Agregar Comentario</button>
+        </div>
     `;
     detail.style.display = 'block';
     detail.scrollIntoView({ behavior: 'smooth' });
+    loadComments(index);
+}
 
+function addComment(index) {
+    const commentInput = document.getElementById('commentInput');
+    const commentText = commentInput.value.trim();
+    if (commentText) {
+        let comments = JSON.parse(localStorage.getItem(`comments_${index}`)) || [];
+        comments.push(commentText);
+        localStorage.setItem(`comments_${index}`, JSON.stringify(comments));
+        commentInput.value = '';
+        loadComments(index);
+    }
+}
+
+function loadComments(index) {
+    const commentsList = document.getElementById('commentsList');
+    commentsList.innerHTML = '';
+    let comments = JSON.parse(localStorage.getItem(`comments_${index}`)) || [];
+    comments.forEach(comment => {
+        const commentElement = document.createElement('p');
+        commentElement.textContent = comment;
+        commentsList.appendChild(commentElement);
+    });
 }
 
 function searchFunction() {
@@ -76,11 +106,7 @@ function searchFunction() {
     const items = document.querySelectorAll('.cellphone-item');
     items.forEach(item => {
         const model = item.querySelector('h3').textContent.toLowerCase();
-        if (model.includes(input)) {
-            item.style.display = '';
-        } else {
-            item.style.display = 'none';
-        }
+        item.style.display = model.includes(input) ? '' : 'none';
     });
 }
 
@@ -92,9 +118,11 @@ function filterFunction() {
 
     const items = document.querySelectorAll('.cellphone-item');
     items.forEach(item => {
-        const itemBrand = item.querySelector('p').textContent.includes('Marca: ' + brand) || brand === '';
-        const itemType = item.querySelector('p').textContent.includes('Tipo: ' + type) || type === '';
-        const itemPrice = parseFloat(item.querySelector('p').textContent.replace(/[^0-9.-]+/g, '')) || 0;
+        const itemIndex = item.dataset.index;
+        const cellphone = cellphones[itemIndex];
+        const itemBrand = cellphone.brand.includes(brand) || brand === '';
+        const itemType = cellphone.type.includes(type) || type === '';
+        const itemPrice = cellphone.price || 0;
 
         if (itemBrand && itemType && itemPrice >= minPrice && itemPrice <= maxPrice) {
             item.style.display = '';
